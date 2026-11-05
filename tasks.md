@@ -46,25 +46,25 @@
 
 ### 4.1 Item Service
 
-- [ ] Validasi nama alat wajib diisi.
-- [ ] Validasi `total_stock` berupa bilangan bulat non-negatif.
-- [ ] Inisialisasi `available_stock` sama dengan `total_stock`.
-- [ ] Implementasikan layanan untuk menampilkan daftar alat.
-- [ ] Implementasikan layanan untuk menambahkan alat.
+- [x] Validasi nama alat wajib diisi.
+- [x] Validasi `total_stock` berupa bilangan bulat non-negatif.
+- [x] Inisialisasi `available_stock` sama dengan `total_stock`.
+- [x] Implementasikan layanan untuk menampilkan daftar alat.
+- [x] Implementasikan layanan untuk menambahkan alat.
 
 ### 4.2 Loan Service
 
-- [ ] Validasi `student_id`, `item_id`, dan `quantity`.
-- [ ] Pastikan `quantity` berupa bilangan bulat positif.
-- [ ] Pastikan item tersedia di database.
-- [ ] Tolak peminjaman jika stok tidak mencukupi.
-- [ ] Kurangi stok dan buat transaksi `BORROWED` dalam satu transaksi database.
-- [ ] Lakukan rollback jika proses peminjaman gagal.
-- [ ] Pastikan transaksi pengembalian ditemukan.
-- [ ] Tolak pengembalian jika status sudah `RETURNED`.
-- [ ] Ubah status menjadi `RETURNED` dan pulihkan stok dalam satu transaksi database.
-- [ ] Lakukan rollback jika proses pengembalian gagal.
-- [ ] Implementasikan pengambilan riwayat peminjaman berdasarkan NIM.
+- [x] Validasi `student_id`, `item_id`, dan `quantity`.
+- [x] Pastikan `quantity` berupa bilangan bulat positif.
+- [x] Pastikan item tersedia di database.
+- [x] Tolak peminjaman jika stok tidak mencukupi.
+- [x] Kurangi stok dan buat transaksi `BORROWED` dalam satu transaksi database.
+- [x] Lakukan rollback jika proses peminjaman gagal.
+- [x] Pastikan transaksi pengembalian ditemukan.
+- [x] Tolak pengembalian jika status sudah `RETURNED`.
+- [x] Ubah status menjadi `RETURNED` dan pulihkan stok dalam satu transaksi database.
+- [x] Lakukan rollback jika proses pengembalian gagal.
+- [x] Implementasikan pengambilan riwayat peminjaman berdasarkan NIM.
 
 ## 5. API Routes
 

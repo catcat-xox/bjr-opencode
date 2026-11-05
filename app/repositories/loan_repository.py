@@ -22,16 +22,30 @@ def get_loan_by_id(db, loan_id):
     ).fetchone()
 
 
-def update_loan_status(db, loan_id, status):
-    """Update a loan status; return True when a row was changed."""
-    cursor = db.execute(
-        """
-        UPDATE Loan
-        SET status = ?
-        WHERE id = ?
-        """,
-        (status, loan_id),
-    )
+def update_loan_status(db, loan_id, status, expected_status=None):
+    """Update a loan status; return True when a row was changed.
+
+    When expected_status is given, the update only applies if the current
+    status matches, which prevents invalid transitions such as double returns.
+    """
+    if expected_status is None:
+        cursor = db.execute(
+            """
+            UPDATE Loan
+            SET status = ?
+            WHERE id = ?
+            """,
+            (status, loan_id),
+        )
+    else:
+        cursor = db.execute(
+            """
+            UPDATE Loan
+            SET status = ?
+            WHERE id = ? AND status = ?
+            """,
+            (status, loan_id, expected_status),
+        )
     return cursor.rowcount == 1
 
 
