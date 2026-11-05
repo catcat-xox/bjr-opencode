@@ -1,0 +1,3 @@
+1. analisis seluruh file markdown saya tanpa membuat kode apapun dahulu
+2.
+3.git remote add origin https://github.com/catcat-xox/bjr-opencode.git setiap ada perubahan wajib di review dan konfirmasi sebelum di push ke github
