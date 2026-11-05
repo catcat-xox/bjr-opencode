@@ -15,4 +15,11 @@ def create_app(test_config=None):
 
     os.makedirs(app.instance_path, exist_ok=True)
 
+    from app import database
+
+    database.init_app(app)
+
+    with app.app_context():
+        database.init_db()
+
     return app
