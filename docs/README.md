@@ -29,13 +29,21 @@ REST API backend untuk mengelola peminjaman alat/fasilitas laboratorium kampus, 
 │   └── services/
 │       ├── item_service.py
 │       └── loan_service.py
+├── docs/                   # seluruh dokumen Markdown
+│   ├── README.md
+│   ├── requirement.md
+│   ├── prd.md
+│   ├── architecture.md
+│   ├── tasks.md
+│   └── code_review.md
 ├── instance/               # database SQLite (tidak di-track Git)
 ├── postman/                # koleksi Postman
 ├── tests/                  # pengujian pytest
+├── .gitignore
 ├── run.py
 ├── requirements.txt
 ├── requirements-dev.txt
-└── README.md
+└── pytest.ini
 ```
 
 ## Prasyarat
@@ -174,7 +182,7 @@ Pengujian mencakup validasi input, pengurangan/penambahan stok, rollback transak
 
 ## Postman
 
-Import file `postman/lab_equipment_loan.postman_collection.json` ke Postman, lalu jalankan request secara berurutan. Variabel koleksi `baseUrl` default-nya `http://127.0.0.1:5000`.
+Import file `postman/lab_equipment_loan.postman_collection.json` dari root proyek ke Postman, lalu jalankan request secara berurutan. Variabel koleksi `baseUrl` default-nya `http://127.0.0.1:5000`.
 
 ## Batasan
 

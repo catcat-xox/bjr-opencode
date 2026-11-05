@@ -59,38 +59,52 @@ SQLite Database
    - Menyimpan data master alat dan transaksi peminjaman.
    - Menegakkan primary key, foreign key, dan constraint dasar.
 
-## 4. Struktur Direktori yang Disarankan
+## 4. Struktur Direktori
 
 ```text
 lab-equipment-loan/
 ├── app/
 │   ├── __init__.py
+│   ├── database.py
+│   ├── errors.py
+│   ├── validators.py
+│   ├── schema.sql
 │   ├── routes/
+│   │   ├── __init__.py
 │   │   ├── item_routes.py
 │   │   └── loan_routes.py
 │   ├── services/
 │   │   ├── item_service.py
 │   │   └── loan_service.py
-│   ├── repositories/
-│   │   ├── item_repository.py
-│   │   └── loan_repository.py
-│   ├── database.py
-│   └── validators.py
+│   └── repositories/
+│       ├── item_repository.py
+│       └── loan_repository.py
+├── docs/
+│   ├── README.md
+│   ├── requirement.md
+│   ├── prd.md
+│   ├── architecture.md
+│   ├── tasks.md
+│   └── code_review.md
 ├── instance/
 │   └── lab_equipment.db
+├── postman/
+│   └── lab_equipment_loan.postman_collection.json
 ├── tests/
+│   ├── conftest.py
 │   ├── test_items.py
-│   └── test_loans.py
+│   ├── test_loans.py
+│   ├── test_returns.py
+│   ├── test_history.py
+│   └── test_flows.py
+├── .gitignore
 ├── run.py
 ├── requirements.txt
-├── requirement.md
-├── prd.md
-├── architecture.md
-├── tasks.md
-└── code_review.md
+├── requirements-dev.txt
+└── pytest.ini
 ```
 
-Struktur ini merupakan usulan pemisahan kode. Implementasi boleh disesuaikan selama tanggung jawab dan alur bisnis tetap terjaga.
+Struktur di atas mencerminkan implementasi saat ini. Seluruh dokumen Markdown ditempatkan di folder `docs/`, sedangkan kode aplikasi, pengujian, dan konfigurasi berada di root proyek.
 
 ## 5. Model Data
 
