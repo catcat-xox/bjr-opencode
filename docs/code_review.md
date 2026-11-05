@@ -84,6 +84,19 @@ Review berfokus pada kesesuaian fungsi, aturan bisnis, integritas stok, konsiste
 - [x] Respons GET `/items` menampilkan stok terkini dari database.
 - [x] Tidak ada nilai stok yang hanya diperbarui di memori tanpa disimpan ke database.
 
+### 5.1 Web UI
+
+- [x] `GET /` mengembalikan `200 OK` dan halaman HTML.
+- [x] Halaman memuat stylesheet dan JavaScript dari folder `static`.
+- [x] Dashboard menampilkan ringkasan stok dan daftar alat dari `GET /items`.
+- [x] Formulir tambah alat memanggil `POST /items`.
+- [x] Formulir peminjaman memanggil `POST /loans`.
+- [x] Pencarian riwayat memanggil `GET /loans/student/{student_id}`.
+- [x] Tombol pengembalian memanggil `PUT /loans/{id}/return`.
+- [x] Pesan error API ditampilkan kepada pengguna tanpa membocorkan detail internal.
+- [x] Data dinamis di-escape sebelum dirender untuk mencegah XSS.
+- [x] UI memuat ulang data dari server setelah operasi berhasil sehingga stok tetap sinkron.
+
 ## 6. Code Quality
 
 - [x] Route/controller tidak menampung seluruh business logic.
@@ -117,12 +130,15 @@ Catatan: autentikasi dan otorisasi belum ditetapkan dalam requirement/PRD. Ketia
 - [x] Ada pengujian item dan transaksi yang tidak ditemukan.
 - [x] Ada pengujian pengembalian ganda.
 - [x] Ada pengujian bahwa stok tetap konsisten ketika transaksi gagal.
+- [x] Ada pengujian halaman Web UI dan aset statis.
 - [x] Hasil pengujian dapat diulang dengan langkah yang jelas.
 
 Bukti pengujian:
 
-- `pytest -q` menghasilkan **31 passed**.
+- `pytest -q` menghasilkan **36 passed**.
+- Pengujian Web UI mencakup render `GET /`, keberadaan elemen dashboard, akses `style.css`, akses `app.js`, dan penggunaan aplikasi yang sama dengan REST API.
 - Smoke test HTTP terhadap server lokal mencakup kelima endpoint, termasuk skenario stok kurang, item tidak ditemukan, dan pengembalian ganda.
+- Halaman `GET /` dan aset statis diverifikasi melalui server lokal.
 - Koleksi Postman tersedia di `postman/lab_equipment_loan.postman_collection.json`.
 
 ## 9. Review Findings
@@ -147,6 +163,6 @@ Gunakan tingkat prioritas:
 - **Jumlah temuan High:** 0
 - **Jumlah temuan Medium:** 0
 - **Jumlah temuan Low:** 3 (1 Resolved, 2 Open)
-- **Catatan reviewer:** Seluruh alur utama berjalan, kelima endpoint tersedia, 31 pengujian otomatis lulus, dan smoke test HTTP berhasil. Stok konsisten, pengembalian ganda dicegah, serta rollback transaksi terverifikasi. Temuan yang tersisa bersifat Low dan tidak menghalangi pemenuhan acceptance criteria.
+- **Catatan reviewer:** Seluruh alur utama berjalan, kelima endpoint tersedia, Web UI terhubung ke REST API, 36 pengujian otomatis lulus, dan smoke test HTTP berhasil. Stok konsisten, pengembalian ganda dicegah, serta rollback transaksi terverifikasi. Temuan yang tersisa bersifat Low dan tidak menghalangi pemenuhan acceptance criteria.
 
 Kode hanya layak disetujui apabila seluruh alur utama berjalan, acceptance criteria terpenuhi, dan tidak ada temuan Critical atau High yang belum diselesaikan.

@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}Lab Equipment Loan System{% endblock %}</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+  <div class="page">
+    <header class="site-header">
+      <div>
+        <p class="eyebrow">Lab Equipment Loan System</p>
+        <h1>{% block heading %}Peminjaman Alat Lab{% endblock %}</h1>
+        <p class="subtitle">{% block subtitle %}Kelola stok alat dan transaksi peminjaman mahasiswa dalam satu tempat.{% endblock %}</p>
+      </div>
+      <span class="api-badge">Flask &middot; SQLite &middot; REST API</span>
+    </header>
+
+    <main>
+      {% block content %}{% endblock %}
+    </main>
+
+    <footer class="site-footer">
+      <span>Lab Equipment Loan System</span>
+      <span id="server-status" class="connection-status">Terhubung ke API</span>
+    </footer>
+  </div>
+
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+  <script src="{{ url_for('static', filename='js/app.js') }}" defer></script>
+</body>
+</html>

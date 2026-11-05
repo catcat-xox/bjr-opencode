@@ -122,7 +122,21 @@
 - [x] Perbarui dokumentasi cara instalasi dan menjalankan aplikasi.
 - [x] Pastikan implementasi sesuai dengan `requirement.md`, `prd.md`, dan `architecture.md`.
 
-## 8. Definition of Done
+## 8. Web UI
+
+- [x] Buat route `GET /` untuk merender halaman dashboard.
+- [x] Buat layout dasar dengan Jinja2.
+- [x] Buat halaman dashboard berisi statistik dan daftar alat.
+- [x] Buat formulir penambahan alat.
+- [x] Buat formulir pengajuan peminjaman.
+- [x] Buat pencarian riwayat berdasarkan NIM.
+- [x] Tambahkan aksi pengembalian alat dari tabel riwayat.
+- [x] Hubungkan seluruh aksi ke REST API menggunakan `fetch`.
+- [x] Tampilkan notifikasi sukses dan error dari API.
+- [x] Buat tampilan responsif dengan CSS.
+- [x] Uji render halaman dan akses aset statis.
+
+## 9. Definition of Done
 
 Pekerjaan dianggap selesai apabila:
 
@@ -133,3 +147,4 @@ Pekerjaan dianggap selesai apabila:
 5. Perubahan stok dan transaksi dilakukan secara atomik.
 6. Pengujian utama berhasil dan endpoint dapat diuji melalui Postman.
 7. Dokumentasi dasar penggunaan aplikasi tersedia.
+8. Web UI dapat diakses melalui `GET /` dan seluruh aksinya memakai REST API.

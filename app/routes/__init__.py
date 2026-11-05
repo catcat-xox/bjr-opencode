@@ -3,10 +3,12 @@ from flask import jsonify
 from app.errors import AppError
 from app.routes.item_routes import bp as item_bp
 from app.routes.loan_routes import bp as loan_bp
+from app.routes.web_routes import bp as web_bp
 
 
 def register_routes(app):
-    """Register all API blueprints."""
+    """Register all API and web blueprints."""
+    app.register_blueprint(web_bp)
     app.register_blueprint(item_bp)
     app.register_blueprint(loan_bp)
 

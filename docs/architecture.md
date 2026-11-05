@@ -2,17 +2,19 @@
 
 ## 1. Tujuan
 
-Dokumen ini menjelaskan rancangan teknis backend **Lab Equipment Loan System** berdasarkan `requirement.md` dan `prd.md`.
+Dokumen ini menjelaskan rancangan teknis **Lab Equipment Loan System** berdasarkan `requirement.md` dan `prd.md`.
 
-Sistem menyediakan REST API untuk mengelola master alat laboratorium, transaksi peminjaman, pengembalian alat, serta riwayat peminjaman mahasiswa.
+Sistem menyediakan REST API untuk mengelola master alat laboratorium, transaksi peminjaman, pengembalian alat, serta riwayat peminjaman mahasiswa. Sebuah web UI ringan dibangun di atas REST API tersebut untuk memudahkan penggunaan sehari-hari.
 
 ## 2. Teknologi
 
 - **Bahasa:** Python 3.x
 - **Backend framework:** Flask
+- **Template engine:** Jinja2
 - **Database:** SQLite
 - **Format pertukaran data:** JSON
-- **Antarmuka:** REST API
+- **Antarmuka:** REST API dan web UI
+- **Frontend:** HTML, CSS, dan JavaScript vanilla
 
 ## 3. Gaya Arsitektur
 
@@ -21,10 +23,11 @@ Gunakan arsitektur berlapis sederhana (*layered architecture*) agar tanggung jaw
 Alur umum:
 
 ```text
-HTTP Client
+Browser (Web UI)
     |
+    | fetch / form submission
     v
-Flask Routes / Controllers
+Flask Routes / Controllers  <---- HTTP Client (Postman, dll.)
     |
     v
 Service Layer (business rules)
@@ -38,24 +41,30 @@ SQLite Database
 
 ### Tanggung jawab lapisan
 
-1. **Routes / Controllers**
+1. **Web UI**
+   - Menyajikan halaman dashboard melalui Jinja2.
+   - Memuat aset CSS dan JavaScript dari folder `static`.
+   - Memanggil REST API melalui `fetch` untuk seluruh operasi data.
+   - Tidak menduplikasi aturan bisnis; validasi dan konsistensi stok tetap di backend.
+
+2. **Routes / Controllers**
    - Mendefinisikan endpoint dan HTTP method.
    - Membaca parameter, path, dan JSON request.
    - Memanggil service yang sesuai.
    - Mengubah hasil service menjadi respons JSON dan HTTP status code.
    - Tidak menyimpan aturan bisnis utama.
 
-2. **Service Layer**
+3. **Service Layer**
    - Menjalankan aturan peminjaman dan pengembalian.
    - Memvalidasi ketersediaan stok dan status transaksi.
    - Mengatur transaksi database agar perubahan stok dan transaksi konsisten.
 
-3. **Data Access Layer**
+4. **Data Access Layer**
    - Menangani query SQLite untuk entitas `Item` dan `Loan`.
    - Memisahkan operasi database dari route.
    - Menggunakan parameterized query, bukan menyusun SQL dari input pengguna.
 
-4. **Database**
+5. **Database**
    - Menyimpan data master alat dan transaksi peminjaman.
    - Menegakkan primary key, foreign key, dan constraint dasar.
 
@@ -72,10 +81,19 @@ lab-equipment-loan/
 │   ├── routes/
 │   │   ├── __init__.py
 │   │   ├── item_routes.py
-│   │   └── loan_routes.py
+│   │   ├── loan_routes.py
+│   │   └── web_routes.py
 │   ├── services/
 │   │   ├── item_service.py
 │   │   └── loan_service.py
+│   ├── static/
+│   │   ├── css/
+│   │   │   └── style.css
+│   │   └── js/
+│   │       └── app.js
+│   ├── templates/
+│   │   ├── base.html
+│   │   └── index.html
 │   └── repositories/
 │       ├── item_repository.py
 │       └── loan_repository.py
@@ -96,7 +114,8 @@ lab-equipment-loan/
 │   ├── test_loans.py
 │   ├── test_returns.py
 │   ├── test_history.py
-│   └── test_flows.py
+│   ├── test_flows.py
+│   └── test_web.py
 ├── .gitignore
 ├── run.py
 ├── requirements.txt
@@ -106,9 +125,37 @@ lab-equipment-loan/
 
 Struktur di atas mencerminkan implementasi saat ini. Seluruh dokumen Markdown ditempatkan di folder `docs/`, sedangkan kode aplikasi, pengujian, dan konfigurasi berada di root proyek.
 
-## 5. Model Data
+## 5. Web UI
 
-### 5.1 Item
+Web UI adalah halaman dashboard yang dirender Flask dengan Jinja2 dan diakses melalui `GET /`.
+
+### 5.1 Komponen
+
+- `app/routes/web_routes.py` — route halaman utama.
+- `app/templates/base.html` — layout dasar, tautan aset, toast, dan status koneksi.
+- `app/templates/index.html` — dashboard statistik, tabel alat, formulir, dan riwayat.
+- `app/static/css/style.css` — tampilan responsif.
+- `app/static/js/app.js` — klien `fetch` untuk seluruh endpoint API.
+
+### 5.2 Alur data
+
+1. Browser memuat `GET /`.
+2. Jinja2 merender `index.html` di dalam `base.html`.
+3. JavaScript memanggil `GET /items` untuk mengisi statistik dan tabel.
+4. Aksi pengguna (tambah alat, pinjam, cari riwayat, kembalikan) memanggil endpoint REST yang sesuai.
+5. Setelah operasi berhasil, UI memuat ulang data dari server.
+6. Pesan error dari API ditampilkan sebagai notifikasi.
+
+### 5.3 Prinsip
+
+- REST API tetap menjadi satu-satunya sumber aturan bisnis.
+- UI tidak menyimpan status stok sendiri; data selalu diambil ulang dari server.
+- Input pengguna di-escape sebelum ditampilkan ke tabel untuk mencegah XSS.
+- Tidak ada build step frontend; aset disajikan langsung oleh Flask.
+
+## 6. Model Data
+
+### 6.1 Item
 
 | Kolom | Tipe | Aturan |
 |---|---|---|
@@ -122,7 +169,7 @@ Ketentuan:
 - Saat alat baru dibuat, `available_stock` diinisialisasi sama dengan `total_stock`.
 - `available_stock` tidak boleh melebihi `total_stock`.
 
-### 5.2 Loan
+### 6.2 Loan
 
 | Kolom | Tipe | Aturan |
 |---|---|---|
@@ -139,7 +186,7 @@ Ketentuan:
 - Pengembalian mengubah status menjadi `RETURNED`.
 - Status `CANCELLED` tercantum dalam model data, tetapi alur pembatalannya belum didefinisikan dalam kebutuhan saat ini.
 
-### 5.3 Relasi
+### 6.3 Relasi
 
 ```text
 Item (1) -------- (N) Loan
@@ -148,7 +195,7 @@ Item (1) -------- (N) Loan
 
 Satu alat dapat memiliki banyak catatan transaksi peminjaman. Setiap transaksi peminjaman merujuk pada satu alat.
 
-## 6. Rancangan API
+## 7. Rancangan API
 
 Semua request dan response menggunakan JSON, kecuali endpoint GET yang tidak memerlukan body.
 
@@ -160,7 +207,7 @@ Semua request dan response menggunakan JSON, kecuali endpoint GET yang tidak mem
 | PUT | `/loans/{id}/return` | Mengembalikan alat | 200 OK |
 | GET | `/loans/student/{student_id}` | Melihat riwayat pinjaman mahasiswa | 200 OK |
 
-### 6.1 Contoh request
+### 7.1 Contoh request
 
 **POST `/items`**
 
@@ -187,9 +234,9 @@ Semua request dan response menggunakan JSON, kecuali endpoint GET yang tidak mem
 
 Tidak memerlukan body berdasarkan kebutuhan saat ini.
 
-## 7. Alur Proses Bisnis
+## 8. Alur Proses Bisnis
 
-### 7.1 Menambahkan alat
+### 8.1 Menambahkan alat
 
 1. Route menerima JSON.
 2. Service memvalidasi `name` dan `total_stock`.
@@ -197,7 +244,7 @@ Tidak memerlukan body berdasarkan kebutuhan saat ini.
 4. `available_stock` diisi sama dengan `total_stock`.
 5. Sistem mengembalikan data alat dengan status `201 Created`.
 
-### 7.2 Peminjaman alat
+### 8.2 Peminjaman alat
 
 1. Route menerima `student_id`, `item_id`, dan `quantity`.
 2. Service memvalidasi seluruh input dan memastikan `quantity` lebih besar dari nol.
@@ -209,7 +256,7 @@ Tidak memerlukan body berdasarkan kebutuhan saat ini.
 6. Jika salah satu operasi gagal, seluruh transaksi database dibatalkan (*rollback*).
 7. Jika berhasil, kembalikan data transaksi dengan status `201 Created`.
 
-### 7.3 Pengembalian alat
+### 8.3 Pengembalian alat
 
 1. Route menerima ID transaksi.
 2. Service mencari transaksi peminjaman.
@@ -220,14 +267,14 @@ Tidak memerlukan body berdasarkan kebutuhan saat ini.
 5. Jika salah satu operasi gagal, lakukan rollback.
 6. Kembalikan data transaksi dengan status `200 OK`.
 
-### 7.4 Riwayat peminjaman
+### 8.4 Riwayat peminjaman
 
 1. Route menerima `student_id` dari URL.
 2. Repository mengambil transaksi berdasarkan NIM.
 3. Sistem mengembalikan daftar transaksi dalam format JSON.
 4. Jika tidak ada transaksi, kembalikan daftar kosong dengan `200 OK`.
 
-## 8. Konsistensi dan Integritas Data
+## 9. Konsistensi dan Integritas Data
 
 - Aktifkan foreign key SQLite pada setiap koneksi (`PRAGMA foreign_keys = ON`).
 - Gunakan transaksi database untuk operasi peminjaman dan pengembalian.
@@ -237,7 +284,7 @@ Tidak memerlukan body berdasarkan kebutuhan saat ini.
 - Gunakan parameterized query.
 - Simpan waktu transaksi secara konsisten. Format dan zona waktu dapat ditetapkan saat implementasi.
 
-## 9. Validasi dan Penanganan Error
+## 10. Validasi dan Penanganan Error
 
 | Kondisi | HTTP status yang diharapkan |
 |---|---|
@@ -259,7 +306,7 @@ Gunakan format respons error yang konsisten, misalnya:
 
 Pesan error harus informatif dan tidak membocorkan detail internal database.
 
-## 10. Batasan dan Hal yang Belum Ditentukan
+## 11. Batasan dan Hal yang Belum Ditentukan
 
 Hal berikut belum dijelaskan dalam requirement dan PRD. Jangan menganggapnya sebagai fitur wajib tanpa keputusan lanjutan:
 

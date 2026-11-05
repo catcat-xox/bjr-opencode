@@ -1,13 +1,15 @@
 # Lab Equipment Loan System
 
-REST API backend untuk mengelola peminjaman alat/fasilitas laboratorium kampus, dengan kontrol stok otomatis dan verifikasi status peminjaman.
+REST API dan web UI untuk mengelola peminjaman alat/fasilitas laboratorium kampus, dengan kontrol stok otomatis dan verifikasi status peminjaman.
 
 ## Teknologi
 
 - Python 3.x
 - Flask
+- Jinja2
 - SQLite
 - JSON
+- HTML, CSS, dan JavaScript vanilla
 
 ## Struktur Proyek
 
@@ -25,10 +27,19 @@ REST API backend untuk mengelola peminjaman alat/fasilitas laboratorium kampus, 
 │   ├── routes/
 │   │   ├── __init__.py
 │   │   ├── item_routes.py
-│   │   └── loan_routes.py
-│   └── services/
-│       ├── item_service.py
-│       └── loan_service.py
+│   │   ├── loan_routes.py
+│   │   └── web_routes.py
+│   ├── services/
+│   │   ├── item_service.py
+│   │   └── loan_service.py
+│   ├── static/
+│   │   ├── css/
+│   │   │   └── style.css
+│   │   └── js/
+│   │       └── app.js
+│   └── templates/
+│       ├── base.html
+│       └── index.html
 ├── docs/                   # seluruh dokumen Markdown
 │   ├── README.md
 │   ├── requirement.md
@@ -77,6 +88,26 @@ Database SQLite berada di `instance/lab_equipment.db` dan **dibuat otomatis** sa
 ```powershell
 .\.venv\Scripts\python.exe -m flask --app run init-db
 ```
+
+## Web UI
+
+Setelah server berjalan, buka:
+
+```text
+http://127.0.0.1:5000/
+```
+
+Halaman dashboard menyediakan:
+
+- Ringkasan jumlah alat, total stok, stok tersedia, dan unit yang sedang dipinjam.
+- Tabel daftar alat dengan stok terkini dan tombol pintas untuk memilih alat.
+- Formulir penambahan alat baru.
+- Formulir pengajuan peminjaman berdasarkan NIM, alat, dan jumlah.
+- Pencarian riwayat peminjaman berdasarkan NIM.
+- Tombol pengembalian alat langsung dari tabel riwayat.
+- Notifikasi keberhasilan atau pesan error dari API.
+
+Web UI memakai REST API yang sama melalui `fetch`, sehingga seluruh aturan bisnis dan validasi tetap dijalankan di backend. Tampilan responsif untuk desktop maupun layar kecil dan tidak memerlukan proses build frontend.
 
 ## Endpoint
 
@@ -178,7 +209,7 @@ Status code yang digunakan:
 .\.venv\Scripts\python.exe -m pytest -q
 ```
 
-Pengujian mencakup validasi input, pengurangan/penambahan stok, rollback transaksi, pengembalian ganda, dan filter riwayat mahasiswa.
+Pengujian mencakup validasi input, pengurangan/penambahan stok, rollback transaksi, pengembalian ganda, filter riwayat mahasiswa, serta render halaman dan penyajian aset statis Web UI. Total saat ini **36 pengujian lulus**.
 
 ## Postman
 
