@@ -68,59 +68,59 @@
 
 ## 5. API Routes
 
-- [ ] Implementasikan `GET /items`.
-- [ ] Implementasikan `POST /items`.
-- [ ] Implementasikan `POST /loans`.
-- [ ] Implementasikan `PUT /loans/{id}/return`.
-- [ ] Implementasikan `GET /loans/student/{student_id}`.
-- [ ] Pastikan seluruh endpoint menerima atau mengembalikan JSON sesuai kebutuhan.
-- [ ] Pastikan HTTP status code sesuai acceptance criteria.
-- [ ] Gunakan format respons sukses dan error yang konsisten.
+- [x] Implementasikan `GET /items`.
+- [x] Implementasikan `POST /items`.
+- [x] Implementasikan `POST /loans`.
+- [x] Implementasikan `PUT /loans/{id}/return`.
+- [x] Implementasikan `GET /loans/student/{student_id}`.
+- [x] Pastikan seluruh endpoint menerima atau mengembalikan JSON sesuai kebutuhan.
+- [x] Pastikan HTTP status code sesuai acceptance criteria.
+- [x] Gunakan format respons sukses dan error yang konsisten.
 
 ## 6. Testing
 
 ### 6.1 Item API
 
-- [ ] Uji `GET /items` ketika database kosong.
-- [ ] Uji penambahan item dengan data valid.
-- [ ] Uji penambahan item tanpa nama.
-- [ ] Uji penambahan item dengan stok negatif.
-- [ ] Uji bahwa stok awal tersedia sama dengan stok total.
+- [x] Uji `GET /items` ketika database kosong.
+- [x] Uji penambahan item dengan data valid.
+- [x] Uji penambahan item tanpa nama.
+- [x] Uji penambahan item dengan stok negatif.
+- [x] Uji bahwa stok awal tersedia sama dengan stok total.
 
 ### 6.2 Loan API
 
-- [ ] Uji peminjaman dengan data valid.
-- [ ] Uji peminjaman ketika stok mencukupi.
-- [ ] Uji peminjaman ketika quantity melebihi stok.
-- [ ] Uji peminjaman dengan `item_id` yang tidak ditemukan.
-- [ ] Uji peminjaman dengan quantity nol atau negatif.
-- [ ] Pastikan stok berkurang sesuai jumlah pinjaman.
-- [ ] Pastikan transaksi gagal tidak mengubah stok.
+- [x] Uji peminjaman dengan data valid.
+- [x] Uji peminjaman ketika stok mencukupi.
+- [x] Uji peminjaman ketika quantity melebihi stok.
+- [x] Uji peminjaman dengan `item_id` yang tidak ditemukan.
+- [x] Uji peminjaman dengan quantity nol atau negatif.
+- [x] Pastikan stok berkurang sesuai jumlah pinjaman.
+- [x] Pastikan transaksi gagal tidak mengubah stok.
 
 ### 6.3 Return API
 
-- [ ] Uji pengembalian transaksi yang valid.
-- [ ] Pastikan status berubah menjadi `RETURNED`.
-- [ ] Pastikan stok bertambah sesuai quantity transaksi.
-- [ ] Uji pengembalian transaksi yang tidak ditemukan.
-- [ ] Uji pengembalian transaksi yang sudah `RETURNED`.
-- [ ] Pastikan pengembalian ganda tidak menambah stok.
+- [x] Uji pengembalian transaksi yang valid.
+- [x] Pastikan status berubah menjadi `RETURNED`.
+- [x] Pastikan stok bertambah sesuai quantity transaksi.
+- [x] Uji pengembalian transaksi yang tidak ditemukan.
+- [x] Uji pengembalian transaksi yang sudah `RETURNED`.
+- [x] Pastikan pengembalian ganda tidak menambah stok.
 
 ### 6.4 Student Loan History API
 
-- [ ] Uji riwayat dengan NIM yang memiliki transaksi.
-- [ ] Uji riwayat dengan NIM yang belum memiliki transaksi.
-- [ ] Pastikan hasil hanya memuat transaksi milik NIM yang diminta.
+- [x] Uji riwayat dengan NIM yang memiliki transaksi.
+- [x] Uji riwayat dengan NIM yang belum memiliki transaksi.
+- [x] Pastikan hasil hanya memuat transaksi milik NIM yang diminta.
 
 ## 7. Final Verification
 
-- [ ] Jalankan seluruh pengujian.
-- [ ] Periksa konsistensi stok setelah beberapa transaksi peminjaman dan pengembalian.
-- [ ] Periksa seluruh endpoint menggunakan Postman.
-- [ ] Pastikan tidak ada error yang belum ditangani.
-- [ ] Periksa struktur proyek dan hapus kode yang tidak digunakan.
-- [ ] Perbarui dokumentasi cara instalasi dan menjalankan aplikasi.
-- [ ] Pastikan implementasi sesuai dengan `requirement.md`, `prd.md`, dan `architecture.md`.
+- [x] Jalankan seluruh pengujian.
+- [x] Periksa konsistensi stok setelah beberapa transaksi peminjaman dan pengembalian.
+- [x] Periksa seluruh endpoint menggunakan Postman.
+- [x] Pastikan tidak ada error yang belum ditangani.
+- [x] Periksa struktur proyek dan hapus kode yang tidak digunakan.
+- [x] Perbarui dokumentasi cara instalasi dan menjalankan aplikasi.
+- [x] Pastikan implementasi sesuai dengan `requirement.md`, `prd.md`, dan `architecture.md`.
 
 ## 8. Definition of Done
 

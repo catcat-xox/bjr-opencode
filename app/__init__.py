@@ -22,4 +22,9 @@ def create_app(test_config=None):
     with app.app_context():
         database.init_db()
 
+    from app.routes import register_error_handlers, register_routes
+
+    register_routes(app)
+    register_error_handlers(app)
+
     return app
